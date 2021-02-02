@@ -1,0 +1,28 @@
+h2 {
+    color:green;
+    font-style: italic;
+}
+
+li {
+    list-style: none;
+}
+
+button {
+    margin: 1%;
+}
+
+input {
+    margin: 0.2em;
+}
+
+.errorMsg {
+    color: green;
+    background: lightgrey;
+    font-size: 20px;
+    text-align: center;
+    border-style: solid;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+
+}
