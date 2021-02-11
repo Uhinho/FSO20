@@ -10,13 +10,11 @@ const getAll = () => {
 
 const create = newObject => {
     const req = axios.post(baseUrl, newObject)
-
     return req.then(res => res.data)
 }
 
 const update = (id, newObject) => {
     const req = axios.put(`${baseUrl}/${id}`, newObject)
-
     return req.then(res => res.data)
 }
 

@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
-
 import PersonForm from './components/PersonForm'
 import PersonList from './components/PersonList'
 import Filter from './components/Filter'
@@ -73,7 +71,6 @@ const App = () => {
     dataService
       .update(persons.filter(p => p.name === personObject.name).map(fp => fp.id), personObject)
       .then(res => {
-
         const copy = [...persons]
         copy.filter(p => p.name == personObject.name).map(fp => fp.number = personObject.number)
 
