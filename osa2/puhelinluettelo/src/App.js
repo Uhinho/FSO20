@@ -7,11 +7,11 @@ import dataService from './services/persons'
 
 const App = () => {
   const [ persons, setPersons] = useState([]) 
-
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ newFilter, setNewFilter ] = useState('')
-  const [ errorMsg, setErrorMsg ] = useState(null)
+  const [ notificationMsg, setNotificationMsg ] = useState(null)
+  const [ notificationColor, setNotificationColor ] = useState(null)
 
   useEffect(() => {
     dataService
@@ -33,9 +33,10 @@ const App = () => {
     setNewFilter(event.target.value)
   }
 
-  const showErrorMsg = message => {
-    setErrorMsg(message)
-    setTimeout(() => { setErrorMsg(null)}, 2000)
+  const showNotificationMsg = (message, color) => {
+    setNotificationColor(color)
+    setNotificationMsg(message)
+    setTimeout(() => { setNotificationMsg(null)}, 2000)
   }
 
   const addPerson = (event) => {
@@ -60,8 +61,13 @@ const App = () => {
         .create(personObject)
         .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson))
+          showNotificationMsg(`${newName} added to the phonebook`, "green")
         })
-        showErrorMsg(`${newName} added to the phonebook`)
+        .catch(error => {
+          console.log(error.response.text)
+          showNotificationMsg(error.response.data.error, "red")
+        })
+        
     }
     setNewName('')
     setNewNumber('')
@@ -75,10 +81,10 @@ const App = () => {
         copy.filter(p => p.name == personObject.name).map(fp => fp.number = personObject.number)
 
         setPersons(copy)
-        showErrorMsg(`Number updated for ${newName}`)
+        showNotificationMsg(`Number updated for ${newName}`, "green")
       })
       .catch(err => {
-        showErrorMsg('Number has already been deleted from the server')
+        showNotificationMsg(err.response.data, "red")
       })
       
   }
@@ -94,7 +100,7 @@ const App = () => {
           setPersons(updatedList)
         })
 
-        showErrorMsg(`${name} deleted from the phonebook`)
+        showNotificationMsg(`${name} deleted from the phonebook`, "green")
     }
       
 
@@ -102,10 +108,10 @@ const App = () => {
 
   return (
     <div>
-      <Notification message={errorMsg} />
+      <Notification message={notificationMsg} color={notificationColor}/>
       <h2>Phonebook</h2>
       <Filter handleFilterInput={handleFilterInput} newFilter={newFilter}/>
-      <h2>Add a new</h2>
+      <h2>Add new number</h2>
       <PersonForm
         onSubmit={addPerson}
         nameInputHandler={handleNameInput}
